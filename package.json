@@ -17,9 +17,7 @@
   },
   "dependencies": {
     "jsext": "^1.0.0",
-    "moment": "^2.18.1"
-  },
-  "devDependencies": {
+    "moment": "^2.18.1",
     "ftp-deploy": "^1.1.0",
     "glob": "^7.0.6",
     "gulp": "^3.9.1",
@@ -40,7 +38,6 @@
     "chai": "^3.5.0",
     "express": "^4.15.2",
     "mocha": "^2.4",
-    "moment": "^2.18.1",
     "yargs": "^4.8.0"
   },
   "scripts": {
