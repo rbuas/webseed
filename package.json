@@ -1,7 +1,7 @@
 {
   "name": "webseed",
   "version": "1.0.1",
-  "description": "A nodejs library to scrap and test web pages and services.",
+  "description": "A nodejs module based on gulp to help devops methods..",
   "author": "rbuas <rodrigobuas@gmail.com>",
   "keywords": [
     "web",
@@ -10,7 +10,7 @@
     "gulp"
   ],
   "license": "MIT",
-  "main": "./index",
+  "main": "./webseed",
   "repository": {
     "type": "git",
     "url": "http://github.com/rbuas/webseed.git"
@@ -23,6 +23,7 @@
     "ftp-deploy": "^1.1.0",
     "glob": "^7.0.6",
     "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.0",
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.1.2",
     "gulp-deploy-ftp": "0.0.2",

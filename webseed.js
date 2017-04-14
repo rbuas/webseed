@@ -13,6 +13,7 @@ var ftpvinyl = require( "vinyl-ftp" );
 var jeditor = require("gulp-json-editor");
 var exec = require("child_process").exec;
 var argv = require("yargs").argv;
+var mocha = require("gulp-mocha");
 var jsext = require("jsext");
 
 function WebSeed (options) {
@@ -139,7 +140,7 @@ WebSeed.prototype.buildLess = function(config) {
     });
 }
 
-WebSeed.prototype.watchLess = function(process, lessfiles, inputfiles, outputdir) {
+WebSeed.prototype.watchLess = function(config) {
     var self = this;
     config = getBundleConfig(self, config);
     if(!config || !config.process || !config.watchfiles)
@@ -188,6 +189,19 @@ WebSeed.prototype.deploystatic = function(ftpconfig, files, destination) {
         endProcess(self, "deploystatic");
     });
 }
+
+WebSeed.prototype.mochaTest = function(config) {
+    var self = this;
+    config = getBundleConfig(self, config);
+    if(!config || !config.process || !config.inputfiles)
+        return console.log("WEBSEED::ERROR: missing test files function parameters");
+
+    return gulp.src(config.inpputfiles, {read:false})
+    .pipe(mocha({ reporter: 'list' }))
+    .on('error', console.log);
+}
+
+
 
 // PRIVATE
 
