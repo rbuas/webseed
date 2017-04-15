@@ -30,7 +30,7 @@ function WebSeed (gulp, options) {
 WebSeed.prototype.DEFAULTOPTIONS = {
     name : "",
     versionfile : "version.json",
-    dateformat : "YYYYMMDDHHmmss",
+    dateformat : "YYYYMMDD::HH:mm:ss",
     manline : "-------------------------------------------------",
     actions : [],
     build : [],
@@ -199,9 +199,16 @@ WebSeed.prototype.mochaTest = function(config) {
     if(!config || !config.process || !config.inputfiles)
         return console.log("WEBSEED::ERROR: missing test files function parameters");
 
+    if(!startProcess(self, config.process)) return;
+
     return self.gulp.src(config.inputfiles, {read:false})
     .pipe(mocha({ reporter: 'spec' }))
-    .on('error', console.log);
+    .on('error', function(err) {
+        console.log(err);
+    })
+    .on('end', function() {
+        endProcess(self, config.process);
+    });
 }
 
 
@@ -230,24 +237,31 @@ function processActions (self) {
 }
 
 function startProcess (self, action) {
-    if(self.process[action]) return false;
+    if(self.process[action]) {
+        console.log("WEBSEED::ERROR: action " + action + " already started")
+        return false;
+    }
 
     var start = moment();
     self.process[action] = start;
     var time = start.format(self.options.dateformat);
     console.log("[" + time + "] WEBSEED::Starting : '" + action + "' ...");
+    return true;
 }
 
 function endProcess (self, action) {
     if(!self.process[action]) return false;
 
     var start = self.process[action];
-    self.process[action] = null;
-    delete self.process[action];
-    
     var time = start.fromNow();
 
-    console.log("[" + time + "] WEBSEED::Finished : '" + action + "' (" + diff + "s)");
+    self.process[action] = null;
+    delete self.process[action];
+
+    var now = moment();
+    var diffms = now.diff(start);
+
+    console.log("[" + now.format(self.options.dateformat) + "] WEBSEED::Finished : '" + action + "' (" + diffms + " ms)");
 }
 
 function getBundleConfig (self, config) {
