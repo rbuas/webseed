@@ -35,7 +35,7 @@
     "gulp-uglify": "^1.5.4",
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
-    "jsext": "^1.0.0",
+    "jsext": "*",
     "mocha": "^2.4",
     "moment": "^2.18.1",
     "vinyl-ftp": "^0.5.0",
