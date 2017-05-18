@@ -3,7 +3,8 @@ module.exports = WebSeed;
 var less = require("gulp-less");
 var moment = require("moment");
 var plumber = require("gulp-plumber");
-var minifyCSS = require("gulp-minify-css");
+var cleanCSS = require("gulp-clean-css");
+var csso = require('gulp-csso');
 var uglifyjs = require("gulp-uglify");
 var concat = require("gulp-concat");
 var path = require("path");
@@ -132,18 +133,10 @@ WebSeed.prototype.buildLess = function(config) {
     return self.gulp.src(config.inputfiles)
     .pipe(plumber())
     .pipe(less())
-    .on('error', function(err) {
-        console.log("WEBSEED::ERROR:LESS:", err);
-        this.emit('end');
-    })
-    .pipe(minifyCSS())
-    .on('error', function(err) {
-        console.log("WEBSEED::ERROR:MINIFY:", err);
-    })
     .pipe(self.gulp.dest(config.outputdir))
-    .on('error', function(err) {
-        console.log("WEBSEED::ERROR:OUTPUTDIR:", err);
-    })
+    .pipe(csso())
+    .pipe(rename({suffix:".min"}))
+    .pipe(self.gulp.dest(config.outputdir))
     .on('end', function() {
         endProcess(self, config.process);
     });
@@ -159,6 +152,18 @@ WebSeed.prototype.watchLess = function(config) {
         console.log("WEBSEED: " + event.path + " was " + event.type + "...");
         return self.buildLess(config);
     });
+}
+
+WebSeed.prototype.command = function(cmd) {
+    var self = this;
+    if(!cmd || !startProcess(self, "command")) return;
+
+    exec(cmd, function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    });
+        
+    endProcess(self, "command");
 }
 
 WebSeed.prototype.connectdir = function(subprojects) {
