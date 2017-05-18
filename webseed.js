@@ -130,14 +130,19 @@ WebSeed.prototype.buildLess = function(config) {
     if(!startProcess(self, config.process)) return;
 
     return self.gulp.src(config.inputfiles)
-    .pipe(less().on('error', function(err) {
-        console.log("WEBSEED::ERROR:", err);
+    .pipe(plumber())
+    .pipe(less())
+    .on('error', function(err) {
+        console.log("WEBSEED::ERROR:LESS:", err);
         this.emit('end');
-    }))
+    })
     .pipe(minifyCSS())
+    .on('error', function(err) {
+        console.log("WEBSEED::ERROR:MINIFY:", err);
+    })
     .pipe(self.gulp.dest(config.outputdir))
     .on('error', function(err) {
-        console.log(err);
+        console.log("WEBSEED::ERROR:OUTPUTDIR:", err);
     })
     .on('end', function() {
         endProcess(self, config.process);
