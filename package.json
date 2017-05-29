@@ -1,6 +1,6 @@
 {
   "name": "webseed",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A nodejs module based on gulp to help devops methods..",
   "author": "rbuas <rodrigobuas@gmail.com>",
   "keywords": [
