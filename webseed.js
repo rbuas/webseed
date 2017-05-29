@@ -3,7 +3,6 @@ module.exports = WebSeed;
 var less = require("gulp-less");
 var moment = require("moment");
 var plumber = require("gulp-plumber");
-var cleanCSS = require("gulp-clean-css");
 var csso = require('gulp-csso');
 var uglifyjs = require("gulp-uglify");
 var concat = require("gulp-concat");
